@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vücut Ölçümleri | DietFit</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/menubar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .measure-container {
+      max-width: 400px;
+      margin: 48px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(46,139,87,0.10);
+      padding: 32px 28px;
+      text-align: center;
+    }
+    .measure-container h2 {
+      color: #2e8b57;
+      margin-bottom: 18px;
+    }
+    .measure-container input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .measure-btn {
+      background: #2e8b57;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    .measure-btn:hover {
+      background: #256d46;
+    }
+    .result-card {
+      margin-top: 28px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 18px 10px;
+      color: #222;
+      font-size: 1.08rem;
+      box-shadow: 0 2px 8px rgba(46,139,87,0.08);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu menu-hidden" id="mainMenu">
+          <li><button onclick="location.href='index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='my_diet.html'"><i class="fas fa-apple-alt"></i> Diyet Programım</button></li>
+          <li><button onclick="location.href='my_workout.html'"><i class="fas fa-dumbbell"></i> Fitness Programım</button></li>
+          <li><button onclick="location.href='olcumler.html'"><i class="fas fa-ruler"></i> Ölçümlerim</button></li>
+        </ul>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div class="measure-container">
+      <h2>Vücut Ölçümleri</h2>
+      <input type="number" id="weight" placeholder="Kilonuz (kg)" min="30" max="300" required>
+      <input type="number" id="height" placeholder="Boyunuz (cm)" min="100" max="250" required>
+      <button class="measure-btn" onclick="calculateBMI()">Görüntüle</button>
+      <div id="result" class="result-card" style="display:none;"></div>
+    </div>
+  </main>
+
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+
+      if (!weight || !height || weight < 30 || height < 100) {
+        showResult('Lütfen geçerli bir kilo ve boy giriniz.');
+        return;
+      }
+
+      // BMI hesapla
+      const heightM = height / 100;
+      const bmi = weight / (heightM * heightM);
+
+      // Günlük kalori ihtiyacını hesapla
+      const dailyCalories = Math.round(weight * 24);
+
+      let bmiStatus = '';
+      if (bmi < 18.5) bmiStatus = 'Zayıf';
+      else if (bmi < 25) bmiStatus = 'Normal';
+      else if (bmi < 30) bmiStatus = 'Fazla kilolu';
+      else bmiStatus = 'Obez';
+
+
+      //bmi değerine göre detaylı açıklama yap
+      if (bmi < 18.5) {
+        bmiStatus += ' - Yetersiz beslenme riski var.';
+      } else if (bmi < 25) {
+        bmiStatus += ' - Sağlıklı bir kilodasınız.';
+      } else if (bmi < 30) {
+        bmiStatus += ' - Kilo vermeniz önerilir.';
+      } else {
+        bmiStatus += ' - Obezite riski yüksek, diyet ve egzersiz önerilir.';
+      }
+      
+      showResult(
+        `<b>Vücut Kitle İndeksi (BMI):</b> ${bmi.toFixed(1)} <br>
+         <b>Durum:</b> ${bmiStatus} <br>
+         <b>Günlük Ortalama Kalori İhtiyacı:</b> ${dailyCalories} kcal`
+      );
+    }
+
+    function showResult(html) {
+      const result = document.getElementById('result');
+      result.innerHTML = html;
+      result.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

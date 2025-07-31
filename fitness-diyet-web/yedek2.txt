@@ -1,0 +1,102 @@
+@media (max-width: 760px){
+    .hero-content{
+        flex-direction:column;
+        text-align:center;
+    }
+    .hero-text, .hero-image{
+        flex:unset;
+    }
+}
+
+
+body{
+    font-family:Arial, sans-serif;
+    margin:0;
+    padding:0;
+}
+
+header{
+    background-color: #222;
+    padding: 10px 20px;
+}
+
+
+/*Menü ve hakkımızda butonları ayarları*/
+.hero-text > button,.menu li button{
+    background-color: #444;
+    color:white;
+    border:none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.hero-text > button:hover, .menu li button:hover{
+    color: #444;
+    background-color: white;
+}
+
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    padding:40px;
+    background-color: #f5f5f5;
+
+}
+
+.hero-content{
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    padding:40px;
+    background-color: #f5f5f5;
+    gap:30px;
+}
+
+.hero-text{
+    flex:1;
+}
+
+.hero-image img{
+    max-width:100%;
+    height: auto;
+    border-radius:10px;
+    flex:1;
+}
+.hero-text h1{
+    margin-bottom:10px;
+
+}
+footer{
+    background-color: #222;
+    color:white;
+    text-align:center;
+    padding:20px 0;
+}
+.intro h2,p{
+    text-align: center;
+}
+
+.navbar{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    padding: 10px 20px;
+    background-color: #222;
+}
+.menu{
+    list-style:none;
+    display:flex;
+    gap:10px;
+    margin:0;
+    padding:0;
+}
+.menu li button,
+.auth-buttons button{
+    background:#444;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:4px;
+
+}

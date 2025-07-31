@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kullanıcı Diyet Atamaları | DietFit Admin</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/menubar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .admin-table-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(46,139,87,0.10);
+      padding: 32px 24px;
+    }
+    .admin-table-title {
+      color: #2e8b57;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .admin-table th, .admin-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: center;
+    }
+    .admin-table th {
+      background: #e8f5e9;
+      color: #2e8b57;
+      font-weight: bold;
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    .admin-table tr:hover {
+      background: #f0f8f5;
+    }
+    @media (max-width: 700px) {
+      .admin-table-container { padding: 10px 2px; }
+      .admin-table th, .admin-table td { padding: 8px 4px; font-size: 0.97rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu" id="mainMenu"></ul>
+      </div>
+    </nav>
+  </header>
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div class="admin-table-container">
+      <h2 class="admin-table-title">Kullanıcı Diyet Atamaları</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Kullanıcı</th>
+            <th>Pazartesi</th>
+            <th>Salı</th>
+            <th>Çarşamba</th>
+            <th>Perşembe</th>
+            <th>Cuma</th>
+            <th>Cumartesi</th>
+            <th>Pazar</th>
+          </tr>
+        </thead>
+        <tbody id="dietAssignmentsTableBody">
+          <tr><td colspan="8" style="text-align:center; color:#888;">Yükleniyor...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mainMenu');
+      menu.classList.toggle('menu-show');
+    }
+    // Diyet atamalarını çek ve tabloya yaz
+    async function loadDietAssignments() {
+      const tbody = document.getElementById('dietAssignmentsTableBody');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#888;">Yükleniyor...</td></tr>';
+      try {
+        const res = await fetch('/api/admin/diet-assignments');
+        if (!res.ok) throw new Error('Yetkisiz veya hata oluştu');
+        const data = await res.json();
+        if (!data.length) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#888;">Hiç atama yok.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = '';
+        for (const user of data) {
+          tbody.innerHTML += `<tr>
+            <td>${user.ad_soyad}</td>
+            <td>${user.days[0]||''}</td>
+            <td>${user.days[1]||''}</td>
+            <td>${user.days[2]||''}</td>
+            <td>${user.days[3]||''}</td>
+            <td>${user.days[4]||''}</td>
+            <td>${user.days[5]||''}</td>
+            <td>${user.days[6]||''}</td>
+          </tr>`;
+        }
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#c00;">Yüklenemedi: ' + err.message + '</td></tr>';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadDietAssignments);
+  </script>
+</body>
+</html>

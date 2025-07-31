@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa | DietFit</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    
+</head>
+<body class="body">
+
+
+    <!--Üst menü-->
+   <header>
+    <nav>
+        <ul class="menu">
+            <li><button onclick="location.href='index.html'">Ana Sayfa</button> </li>
+            <li><button>Blog</button></li>
+            <li><button onclick="location.href='wrw.html'">Biz Kimiz?</button></li>
+            <li><button onclick="location.href='./contact.html'">İletişim</button></li>
+        </ul>
+            <div class="auth-buttons">
+                <button onclick="location.href='login.html'">Giriş Yap</button>
+                <button onclick="location.href=register.html">Kaydol</button>
+            </div>
+        
+    </nav>
+   </header>
+
+   <!--Ana görsel ve slogan-->
+
+   <section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Sağlıklı zayıflamak ve kaslanmak artık rüya değil.</h1>
+            <p>Senin için en doğru yol haritası burada.</p>
+            <button onclick="location.href='wrw.html'">Hakkımızda Daha Fazla</button>
+        </div>
+        <div class="hero-image">
+            <img" src="../images/site_giris_fotograf.jpg" alt="Fit man and woman">
+        </div>
+        
+        
+    </div>
+   </section>
+
+   <!--Ana İçerik-->
+   <main>
+    <section class="intro">
+        <h2>Hoş Geldiniz.</h2>
+        <p>DietFit olarak, sağlıklı yaşam hedeflerinize ulaşmanız için yanınızdayız. 
+         Kişiye özel diyet ve antrenman programlarıyla şimdi değişime adım atın.</p>
+    </section>
+   </main>
+
+   <!--Alt Bilgi-->
+   <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+   </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gelen Kutusu | DietFit</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/menubar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .inbox-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(46,139,87,0.10);
+      padding: 32px 24px;
+    }
+    .inbox-title {
+      color: #2e8b57;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    table.inbox-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .inbox-table th, .inbox-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    .inbox-table th {
+      background: #e8f5e9;
+      color: #2e8b57;
+      font-weight: bold;
+    }
+    .inbox-table tr:last-child td {
+      border-bottom: none;
+    }
+    .inbox-table tr:hover {
+      background: #f0f8f5;
+    }
+    @media (max-width: 600px) {
+      .inbox-container { padding: 10px 2px; }
+      .inbox-table th, .inbox-table td { padding: 8px 4px; font-size: 0.97rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu" id="mainMenu">
+          <li><button onclick="location.href='index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+        </ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div class="inbox-container">
+      <h2 class="inbox-title">Gelen Kutusu</h2>
+      <div id="messagesArea">
+        <table class="inbox-table">
+          <thead>
+            <tr>
+              <th>Ad Soyad</th>
+              <th>E-posta</th>
+              <th>Mesaj</th>
+              <th>Tarih</th>
+            </tr>
+          </thead>
+          <tbody id="messagesTableBody">
+            <tr><td colspan="4" style="text-align:center; color:#888;">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mainMenu');
+      menu.classList.toggle('menu-show');
+    }
+    // Mesajları çek ve tabloya yaz
+    async function loadMessages() {
+      const tbody = document.getElementById('messagesTableBody');
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Yükleniyor...</td></tr>';
+      try {
+        const res = await fetch('/messages');
+        if (!res.ok) throw new Error('Yetkisiz veya hata oluştu');
+        const messages = await res.json();
+        if (!messages.length) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Hiç mesaj yok.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = '';
+        for (const msg of messages) {
+          tbody.innerHTML += `<tr>
+            <td>${msg.ad}</td>
+            <td>${msg.eposta}</td>
+            <td>${msg.mesaj}</td>
+            <td>${msg.gonderim_tarihi ? new Date(msg.gonderim_tarihi).toLocaleString('tr-TR') : ''}</td>
+          </tr>`;
+        }
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#c00;">Yüklenemedi: ' + err.message + '</td></tr>';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadMessages);
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim | DietFit</title>
+    <link rel="stylesheet" href="../../css/wrw.css">
+    <link rel="stylesheet" href="../../css/menubar.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+</head>
+<body>
+      <!-- Üst Menü -->
+    <header style="position:static;">
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu menu-hidden" id="mainMenu">
+          <li><button onclick="location.href='./index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+        </ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    </header>
+    <h1>Biz Kimiz?</h1>
+    
+    <section id="about-section">
+        <h2>Hakkımızda</h2>
+        <p>DietFit, sağlıklı yaşam ve fitness alanında uzmanlaşmış bir ekiptir. Amacımız, bireylerin sağlıklı beslenme ve egzersiz alışkanlıklarını benimsemelerine yardımcı olmaktır.</p>
+        
+        <h3>Ekibimiz</h3>
+        <ul>
+            <li><strong>Ahmet Yılmaz:</strong> Beslenme Uzmanı</li>
+            <li><strong>Ayşe Demir:</strong> Kişisel Antrenör</li>
+            <li><strong>Mehmet Can:</strong> Spor Bilimci</li>
+        </ul>
+
+        <h3>Misyonumuz</h3>
+        <p>Herkese ulaşılabilir ve etkili sağlık çözümleri sunmak.</p>
+
+        <h3>Vizyonumuz</h3>
+        <p>Dünya genelinde sağlıklı yaşam tarzını teşvik eden lider bir platform olmak.</p>
+
+    </section>
+
+
+    <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+</body>
+</html>

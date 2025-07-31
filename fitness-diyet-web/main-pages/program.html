@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programlar</title>
+    <link rel="stylesheet" href="../../css/program.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/menubar.css">
+</head>
+<body>
+
+  <header style="position:static;"> <!--sabit menubar-->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu menu-hidden" id="mainMenu">
+          <li><button onclick="location.href='./index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+        </ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+    <h1>Programlar</h1>
+
+    <section class="program-section">
+        <h2>Diyet Programları</h2>
+        <div class="program-cards">
+            <div class="program-card">
+                <h3>Ketojenik Diyet</h3>
+                <p>Karbonhidratı azaltıp, sağlıklı yağ ve protein tüketimini artırarak kilo vermeyi hedefler.</p>
+            </div>
+            <div class="program-card">
+                <h3>Aralıklı Oruç</h3>
+                <p>Belirli saatlerde yemek yiyip, kalan sürede oruç tutarak metabolizmayı hızlandırır.</p>
+            </div>
+            <div class="program-card">
+                <h3>Vejetaryen Diyet</h3>
+                <p>Hayvansal ürünleri azaltıp, sebze ve meyve ağırlıklı beslenmeyi önerir.</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <section class="program-section">
+        <h2>Fitness Programları</h2>
+        <div class="program-cards">
+            <div class="program-card">
+                <h3>Başlangıç Seviyesi</h3>
+                <p>Haftada 3 gün temel vücut ağırlığı egzersizleri ve hafif kardiyo içerir.</p>
+            </div>
+            <div class="program-card">
+                <h3>Kas Geliştirme</h3>
+                <p>Ağırlık antrenmanları ve protein ağırlıklı beslenme ile kas kütlesi artırılır.</p>
+            </div>
+            <div class="program-card">
+                <h3>Yağ Yakımı</h3>
+                <p>Yüksek yoğunluklu interval antrenmanları (HIIT) ve düşük kalorili diyet içerir.</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mainMenu');
+      menu.classList.toggle('menu-show');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+node -e "console.log(require('bcryptjs').hashSync('your_password', 10))" //Useful for hash pws

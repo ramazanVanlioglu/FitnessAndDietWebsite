@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaydol | DietFit</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: #f6f8fa;
+      }
+      .register-container {
+        margin: auto;
+        background: #fff;
+        padding: 48px 40px;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(46,139,87,0.18), 0 1.5px 8px rgba(46,139,87,0.10);
+        max-width: 420px;
+        min-height: 420px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .register-container h2 {
+        color: #2e8b57;
+        margin-bottom: 24px;
+      }
+      .register-container input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        border: 1px solid #cfd8dc;
+        border-radius: 6px;
+        font-size: 1rem;
+        background: #f9f9f9;
+        transition: border-color 0.2s;
+      }
+      .register-container input:focus {
+        border-color: #2e8b57;
+        outline: none;
+      }
+      .register-container button {
+        width: 100%;
+        background: #2e8b57;
+        color: #fff;
+        border: none;
+        padding: 14px 0;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-bottom: 10px;
+      }
+      .register-container button:hover {
+        background: #256d46;
+      }
+      .register-container .login-link {
+        margin-top: 10px;
+        font-size: 0.97rem;
+      }
+      .register-container .login-link a {
+        color: #2e8b57;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .register-container .login-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+</head>
+<body>
+  <header style="position:static;">
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu" id="mainMenu">
+          <li><button onclick="location.href='./index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+        </ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div class="register-container">
+      <h2>Kaydolun</h2>
+      <form id="registerForm">
+        <input type="text" placeholder="İsim" required>
+        <input type="text" placeholder="Soyisim" required>
+        <input type="email" placeholder="E-posta" required>
+        <input type="password" placeholder="Şifre" required>
+        <input type="password" placeholder="Şifre Tekrar" required>
+        
+        <div style="margin-bottom: 16px; width:100%; text-align:center;">
+          <span id="captchaText" style="font-size:1.2rem; letter-spacing:4px; background:#eef4fa; padding:6px 18px; border-radius:8px; display:inline-block; font-weight:bold; color:#2e8b57;"></span>
+        </div>
+        <input type="text" id="captchaInput" placeholder="Yukarıdaki kodu girin" required style="margin-bottom:16px;">
+        
+        <button type="submit">Kaydol</button>
+      </form>
+      <div id="registerMessage" style="color: #2e8b57; margin-top: 12px; display:none;"></div>
+      <div class="login-link">
+        Zaten hesabınız var mı? <a href="login.html">Giriş Yapın</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mainMenu');
+      menu.classList.toggle('menu-show');
+    }
+
+    // Simple captcha generator
+    function generateCaptcha() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "";
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('captchaText').textContent = code;
+      return code;
+    }
+
+    let currentCaptcha = "";
+
+    function validateCaptcha(event) {
+      const input = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (input !== currentCaptcha) {
+        alert("Captcha kodu yanlış. Lütfen tekrar deneyin.");
+        currentCaptcha = generateCaptcha();
+        event.preventDefault();
+        return false;
+      }
+      return true;
+    }
+
+    window.onload = function() {
+      currentCaptcha = generateCaptcha();
+    };
+
+document.getElementById('registerForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    ad: form[0].value,
+    soyad: form[1].value,
+    eposta: form[2].value,
+    sifre: form[3].value
+  };
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  const result = await response.json();
+  const msg = document.getElementById('registerMessage');
+  if(result.success) {
+    msg.textContent = "Kayıt başarılı! Ana sayfaya yönlendiriliyorsunuz...";
+    msg.style.display = "block";
+    setTimeout(() => window.location.href = "index.html", 2000);
+  } else {
+    msg.textContent = result.error || "Kayıt başarısız.";
+    msg.style.display = "block";
+  }
+};
+  </script>
+</body>
+</html>

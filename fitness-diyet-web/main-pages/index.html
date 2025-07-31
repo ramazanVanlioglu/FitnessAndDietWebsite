@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ana Sayfa | DietFit</title>
+  <link rel="stylesheet" href="../../css/styles.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- Menubar/Header Section -->
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu menu-hidden" id="mainMenu">
+          <li><button onclick="location.href='index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+          
+        </ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Ara..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <!-- Gelen Kutusu admin ise buraya eklenecek -->
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>
+          <span class="hero-line hero-grey hero-first">Dinç.</span><br>
+          <span class="hero-line hero-grey hero-second">Dinamik.</span><br>
+          <span class="hero-line hero-green hero-third">Daima.</span>
+        </h1>
+        <a href="/contact.html" class="hero-cta">BİZİMLE ÇALIŞIN  <span class="hero-cta-icon">⭢</span></a>
+      </div>
+      <div class="hero-image">
+        <img src="../../images/fitness-hero.png" alt="Fitness illustration" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script src="../../js/index.js"></script>
+</body>
+</html>
+
+

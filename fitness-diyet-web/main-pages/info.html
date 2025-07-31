@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kullanıcı Bilgileri | DietFit</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/menubar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .profile-card {
+      max-width: 400px;
+      margin: 60px auto 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(46,139,87,0.10);
+      padding: 32px 28px 24px 28px;
+      text-align: center;
+      color: #2e8b57;
+      font-size: 1.1rem;
+    }
+    .profile-card h2 {
+      margin-bottom: 18px;
+      color: #2e8b57;
+      font-size: 1.5rem;
+    }
+    .profile-info {
+      margin: 0 auto;
+      text-align: left;
+      color: #333;
+      font-size: 1.08rem;
+    }
+    .profile-info div {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+    .profile-info i {
+      margin-right: 10px;
+      color: #2e8b57;
+      min-width: 22px;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .profile-card { padding: 18px 6px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu" id="mainMenu"></ul>
+      </div>
+    </nav>
+  </header>
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div class="profile-card" id="profileCard">
+      <h2>Kullanıcı Bilgileri</h2>
+      <div class="profile-info" id="profileInfo">
+        <div><i class="fas fa-user"></i> <span id="adSoyad">Yükleniyor...</span></div>
+        <div><i class="fas fa-envelope"></i> <span id="eposta"></span></div>
+        <div><i class="fas fa-user-shield"></i> <span id="rol"></span></div>
+        <div><i class="fas fa-calendar-alt"></i> <span id="kayitTarihi"></span></div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mainMenu');
+      menu.classList.toggle('menu-show');
+    }
+    async function loadUserInfo() {
+      try {
+        const res = await fetch('/api/userinfo');
+        if (!res.ok) throw new Error('Giriş gerekli veya hata oluştu');
+        const data = await res.json();
+        document.getElementById('adSoyad').textContent = data.ad + ' ' + data.soyad;
+        document.getElementById('eposta').textContent = data.eposta;
+        document.getElementById('rol').textContent = data.rol === 'admin' ? 'Admin' : 'Kullanıcı';
+        document.getElementById('kayitTarihi').textContent = data.kayit_tarihi;
+      } catch (err) {
+        document.getElementById('profileInfo').innerHTML = '<span style="color:#c00">Bilgiler yüklenemedi: ' + err.message + '</span>';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadUserInfo);
+  </script>
+</body>
+</html>

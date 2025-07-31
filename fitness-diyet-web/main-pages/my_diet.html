@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diyet Programım | DietFit</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/menubar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .diet-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      margin: 36px 0 24px 0;
+    }
+    .diet-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(46,139,87,0.10);
+      padding: 28px 22px 18px 22px;
+      min-width: 220px;
+      max-width: 260px;
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: 2px solid #e0e0e0;
+    }
+    .diet-card.selected, .diet-card:hover {
+      box-shadow: 0 8px 32px rgba(46,139,87,0.18);
+      border: 2px solid #2e8b57;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .diet-card h3 {
+      color: #2e8b57;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    .diet-card p {
+      color: #444;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .select-btn {
+      background: #2e8b57;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .select-btn:hover {
+      background: #256d46;
+    }
+    .diet-detail {
+      margin: 36px auto 0 auto;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(46,139,87,0.10);
+      padding: 32px 28px;
+      text-align: center;
+      display: none;
+    }
+    .diet-detail.active {
+      display: block;
+    }
+    .diet-detail h2 {
+      color: #2e8b57;
+      margin-bottom: 18px;
+    }
+    .diet-detail p {
+      color: #333;
+      font-size: 1.08rem;
+      margin-bottom: 10px;
+    }
+    .diet-days {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 32px 0 0 0;
+    }
+    .diet-day-col {
+      min-width: 90px;
+      min-height: 60px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 2px dashed #2e8b57;
+      text-align: center;
+      padding: 10px 4px;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .diet-day-col:hover {
+      background: #e8f5e9;
+    }
+    .assigned-diet {
+      min-height: 24px;
+      font-weight: bold;
+      color: #2e8b57;
+    }
+    @media (max-width: 700px) {
+      .diet-cards { flex-direction: column; gap: 16px; }
+      .diet-card { min-width: unset; max-width: 100%; }
+      .diet-detail { padding: 18px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu" id="mainMenu"></ul>
+        <div class="auth-buttons">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search..." oninput="showSuggestions()" />
+            <button><i class="fas fa-search"></i></button>
+            <ul id="suggestionsList" class="suggestions"></ul>
+          </div>
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;">
+    <div class="diet-cards" id="dietCards">
+      <!-- Kartlar JS ile doldurulacak -->
+    </div>
+    <div class="diet-days" id="dietDays" style="display:flex;gap:12px;justify-content:center;margin:32px 0 0 0;"></div>
+    <div class="diet-detail" id="dietDetail">
+      <!-- Seçilen diyetin detayları burada gösterilecek -->
+    </div>
+    <!-- Kaydet butonu ve popup mesajı için alan -->
+    <button id="saveBtn" class="select-btn" style="margin:24px auto 0 auto;display:none;">Kaydet</button>
+    <div id="popupMsg" style="display:none;"></div>
+  </main>
+  <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+    // Diyet türleri ve açıklamaları
+    const diets = [
+      {
+        name: 'Ketojenik Diyet',
+        short: 'Karbonhidratı azaltıp, sağlıklı yağ ve protein tüketimini artırarak kilo vermeyi hedefler.',
+        detail: 'Ketojenik diyet, vücudu ketozise sokarak yağ yakımını hızlandırır. Temel olarak karbonhidrat alımı çok düşük tutulur, protein ve sağlıklı yağlar ön plandadır. Özellikle hızlı kilo vermek isteyenler ve insülin direnci olanlar için uygundur.'
+      },
+      {
+        name: 'Vegan Diyet',
+        short: 'Hayvansal ürünleri tamamen dışlar, bitkisel beslenmeyi esas alır.',
+        detail: 'Vegan diyet, et, süt, yumurta gibi tüm hayvansal ürünleri dışlar. Sebze, meyve, baklagil ve tahıllar temel besin kaynaklarıdır. Doğru planlandığında sağlıklı ve çevre dostu bir beslenme şeklidir.'
+      },
+      {
+        name: 'Vejetaryen Diyet',
+        short: 'Et ve balık tüketilmez, süt ve yumurta serbesttir.',
+        detail: 'Vejetaryen diyet, et ve balık tüketimini dışlar ancak süt ürünleri ve yumurta serbesttir. Bitkisel ağırlıklı beslenmek isteyenler için uygundur.'
+      },
+      {
+        name: 'Aralıklı Oruç',
+        short: 'Belirli saatlerde yemek yiyip, kalan sürede oruç tutarak metabolizmayı hızlandırır.',
+        detail: 'Aralıklı oruç, günün belirli saatlerinde yemek yemeye izin verir, kalan sürede kalori alınmaz. 16:8, 18:6 gibi popüler uygulama biçimleri vardır. Kilo kontrolü ve insülin hassasiyeti için faydalı olabilir.'
+      },
+      {
+        name: 'Akdeniz Diyeti',
+        short: 'Sebze, meyve, zeytinyağı, balık ve tam tahıllar ön planda.',
+        detail: 'Akdeniz diyeti, kalp sağlığı için önerilen, sebze, meyve, zeytinyağı, balık ve tam tahılların bolca tüketildiği bir beslenme modelidir. Uzun vadede sağlıklı yaşamı destekler.'
+      }
+    ];
+    const cardsDiv = document.getElementById('dietCards');
+    const detailDiv = document.getElementById('dietDetail');
+    const daysDiv = document.getElementById('dietDays');
+    const days = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+    // Günler sütununu oluştur
+    const dayAssignments = Array(7).fill(null);
+    // --- Atama işlemleri için yardımcı fonksiyonlar ---
+    // Programlar ile veritabanı id eşlemesi (sıra: 0,1,2...)
+    const programIdMap = [1,2,3,4,5]; // Veritabanındaki diyet programlarının id'leri sırasıyla (gerekirse backend'den dinamik çekilebilir)
+
+    // Atamaları backend'den çek
+    async function loadAssignments() {
+      const resp = await fetch('/api/get-assignments?type=diyet');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data.assignments)) {
+          for (let i = 0; i < 7; i++) {
+            dayAssignments[i] = data.assignments[i] !== null ? programIdMap.indexOf(data.assignments[i]) : null;
+          }
+          updateDayAssignments();
+        }
+      }
+    }
+    // Atamaları backend'e kaydet
+    async function saveAssignments() {
+      // Program id'lerini gönder
+      const assignments = dayAssignments.map(idx => idx !== null ? programIdMap[idx] : null);
+      await fetch('/api/save-assignments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assignments, type: 'diyet' })
+      });
+    }
+    // Gün ataması değiştiğinde kaydet
+    function onAssignmentChange() {
+      updateDayAssignments();
+      saveAssignments();
+    }
+    // Günler sütununu oluştur (değişiklik: onAssignmentChange çağrılır)
+    days.forEach((day, idx) => {
+      const dayCol = document.createElement('div');
+      dayCol.className = 'diet-day-col';
+      dayCol.style.cssText = 'min-width:90px;min-height:60px;background:#f9f9f9;border-radius:8px;border:2px dashed #2e8b57;text-align:center;padding:10px 4px;transition:background 0.2s;position:relative;';
+      dayCol.innerHTML = `<div style="font-weight:bold;color:#2e8b57;margin-bottom:6px;">${day}</div><div class="assigned-diet" style="min-height:24px;"></div>`;
+      dayCol.ondragover = e => { e.preventDefault(); dayCol.style.background='#e8f5e9'; };
+      dayCol.ondragleave = e => { dayCol.style.background='#f9f9f9'; };
+      dayCol.ondrop = e => {
+        e.preventDefault();
+        dayCol.style.background='#f9f9f9';
+        const idx = +dayCol.getAttribute('data-idx');
+        const progIdx = +e.dataTransfer.getData('dietIdx');
+        dayAssignments[idx] = progIdx;
+        onAssignmentChange();
+      };
+      dayCol.setAttribute('data-idx', idx);
+      daysDiv.appendChild(dayCol);
+    });
+    // Kartları oluştur (değişiklik yok)
+    diets.forEach((diet, idx) => {
+      const card = document.createElement('div');
+      card.className = 'diet-card';
+      card.setAttribute('draggable', 'true');
+      card.innerHTML = `<h3>${diet.name}</h3><p>${diet.short}</p><button class="select-btn">Diyeti Seç</button>`;
+      card.ondragstart = e => { e.dataTransfer.setData('dietIdx', idx); };
+      card.querySelector('.select-btn').onclick = function(e) {
+        document.querySelectorAll('.diet-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        detailDiv.innerHTML = `<h2>${diet.name}</h2><p>${diet.detail}</p>`;
+        detailDiv.classList.add('active');
+        detailDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+      cardsDiv.appendChild(card);
+    });
+    function updateDayAssignments() {
+      document.querySelectorAll('.diet-day-col').forEach((col, idx) => {
+        const progIdx = dayAssignments[idx];
+        const progDiv = col.querySelector('.assigned-diet');
+        progDiv.innerHTML = '';
+        if (progIdx !== null && diets[progIdx]) {
+          progDiv.textContent = diets[progIdx].name;
+          // Kaldır butonu ekle
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = 'Diyeti Kaldır';
+          removeBtn.className = 'remove-btn';
+          removeBtn.style = 'margin-left:8px;background:#e53935;color:#fff;border:none;border-radius:4px;padding:2px 8px;font-size:0.92rem;cursor:pointer;';
+          removeBtn.onclick = function(e) {
+            dayAssignments[idx] = null;
+            onAssignmentChange();
+          };
+          progDiv.textContent = diets[progIdx].name + ' ';
+          progDiv.appendChild(removeBtn);
+        } else {
+          progDiv.textContent = '';
+        }
+      });
+    }
+    // --- KAYDET BUTONU ve POPUP ---
+    // Popup göster
+    function showPopup(msg) {
+      let popup = document.getElementById('popupMsg');
+      if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'popupMsg';
+        popup.style = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#2e8b57;color:#fff;padding:24px 36px;border-radius:12px;z-index:9999;font-size:1.2rem;box-shadow:0 8px 32px rgba(46,139,87,0.18);display:none;';
+        document.body.appendChild(popup);
+      }
+      popup.textContent = msg;
+      popup.style.display = 'block';
+      setTimeout(() => { popup.style.display = 'none'; }, 1800);
+    }
+    // Kaydet butonunu dinamik ekle (main'in en altına)
+    let saveBtn = document.getElementById('saveBtn');
+    if (!saveBtn) {
+      saveBtn = document.createElement('button');
+      saveBtn.id = 'saveBtn';
+      saveBtn.textContent = 'Kaydet';
+      saveBtn.className = 'select-btn';
+      saveBtn.style = 'margin:24px auto 0 auto;display:block;font-size:1.08rem;min-width:120px;';
+      document.querySelector('main').appendChild(saveBtn);
+    } else {
+      saveBtn.style.display = 'block';
+    }
+    saveBtn.onclick = async function() {
+      await saveAssignments();
+      showPopup('Değişiklikler kaydedildi!');
+    };
+    // Sayfa yüklenince atamaları çek
+    loadAssignments();
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim | DietFit</title>
+    <link rel="stylesheet" href="../../css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header style="position:static;">
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="./index.html" class="logo">DietFit</a>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <ul class="menu menu-hidden" id="mainMenu">
+          <li><button onclick="location.href='./index.html'"><i class="fas fa-home"></i> Ana Sayfa</button></li>
+          <li><button onclick="location.href='wrw.html'"><i class="fas fa-users"></i> Biz Kimiz?</button></li>
+          <li><button onclick="location.href='program.html'"><i class="fas fa-bars"></i> Programlar</button></li>
+          <li><button onclick="location.href='contact.html'"><i class="fas fa-envelope"></i> İletişim</button></li>
+        </ul>
+        <div class="auth-buttons">
+          
+          <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+          <button onclick="location.href='register.html'"><i class="fas fa-user-plus"></i> Kaydol</button>
+        </div>
+        <div class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle"></i> <span id="userName">Kullanıcı</span> <i class="fas fa-caret-down"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profile-link"><i class="fas fa-id-card"></i> Kullanıcı Bilgilerim</a>
+            <a href="#" id="inbox-link" style="display:none;"><i class="fas fa-inbox"></i> Gelen Kutusu</a>
+            <a href="#" onclick="logoutUser(event)"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    </header>
+    <h1>İletişim bilgileri</h1>
+    
+    <section id="contact-section">
+        <h2>Bize Ulaşın</h2>
+        <form class="contact-form" id="contactForm" action="#" method="post">
+            <label for="name">Adınız:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">E-posta:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="message">Mesajınız:</label><br>
+            <textarea id="message" name="message" rows="5" required></textarea><br><br>
+
+            <button type="submit">Gönder</button>
+        </form>
+        <div class="contact-info">
+            <h3>İletişim Bilgilerimiz</h3>
+            <p><strong>Adres:</strong> Sağlıklı Yaşam Cad. No:10, İstanbul</p>
+            <p><strong>Telefon:</strong> +90 555 123 45 67</p>
+            <p><strong>E-posta:</strong> info@dietfit.com</p>
+        </div>
+        <div id="contactMessage" style="color: #2e8b57; margin-top: 12px; display:none;"></div>
+    </section>
+    <footer>
+    <p>&copy; 2025 DietFit. Tüm hakları saklıdır.</p>
+  </footer>
+  <script src="../../js/menubar.js"></script>
+  <script>
+  document.getElementById('contactForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const msg = document.getElementById('contactMessage');
+    if (!name || !email || !message) {
+      msg.textContent = "Lütfen tüm alanları doldurun.";
+      msg.style.display = "block";
+      return;
+    }
+    try {
+      const response = await fetch('/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      const result = await response.json();
+      if (result.success) {
+        msg.textContent = "Mesajınız iletildi, ana sayfaya yönlendiriliyorsunuz...";
+        msg.style.display = "block";
+        msg.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => window.location.href = "index.html", 2000);
+      } else {
+        msg.textContent = result.error || "Mesaj gönderilemedi.";
+        msg.style.display = "block";
+      }
+    } catch (err) {
+      msg.textContent = "Bir hata oluştu. Lütfen tekrar deneyin.";
+      msg.style.display = "block";
+    }
+  };
+  </script>
+</body>
+</html>
